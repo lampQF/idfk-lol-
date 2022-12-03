@@ -2830,7 +2830,7 @@ const TankDefinitions = JSON.parse(`[
         },
         "visibilityRateShooting": 0.15,
         "visibilityRateMoving": 0.1,
-        "invisibilityRate": 0.09,
+        "invisibilityRate": 0.08,
         "fieldFactor": 0.8,
         "absorbtionFactor": 1,
         "speed": 1,
