@@ -293,7 +293,7 @@ export default class TankBody extends LivingEntity implements BarrelBase {
 
             this.styleData.opacity = util.constrain(this.styleData.values.opacity, 0, 1);
             
-            this.damageReduction = (1 - this.styleData.opacity) / 2;
+            this.damageReduction = 1 - this.styleData.opacity;
         }
 
 
