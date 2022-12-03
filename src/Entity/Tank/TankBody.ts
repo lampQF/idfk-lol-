@@ -317,7 +317,7 @@ export default class TankBody extends LivingEntity implements BarrelBase {
             this.reloadTime = 15 * Math.pow(0.914, this.cameraEntity.cameraData.values.statLevels.values[Stat.Reload]);
             
             // Opacity Defense
-            this.damageReduction -= (this.styleData.opacity / 2);
+            this.damageReduction = (this.styleData.opacity / 2);
             this.damageReduction = util.constrain(this.damageReduction, 0, 0.5);
         }
 
