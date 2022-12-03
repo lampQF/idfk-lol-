@@ -286,18 +286,13 @@ export default class TankBody extends LivingEntity implements BarrelBase {
 
         if (this.definition.flags.invisibility) {
 
-            if (this.inputs.flags & InputFlags.leftclick) {
-                this.styleData.opacity += this.definition.visibilityRateShooting;
-            } else this.damageReduction -= this.definition.visibilityRateShooting;
-            if (this.inputs.flags & (InputFlags.up | InputFlags.down | InputFlags.left | InputFlags.right) || this.inputs.movement.x || this.inputs.movement.y) {
-                this.styleData.opacity += this.definition.visibilityRateMoving;
-            } else this.damageReduction -= this.definition.visibilityRateMoving;
+            if (this.inputs.flags & InputFlags.leftclick) this.styleData.opacity += this.definition.visibilityRateShooting;
+            if (this.inputs.flags & (InputFlags.up | InputFlags.down | InputFlags.left | InputFlags.right) || this.inputs.movement.x || this.inputs.movement.y) this.styleData.opacity += this.definition.visibilityRateMoving;
            
             this.styleData.opacity -= this.definition.invisibilityRate;
-            this.damageReduction += this.definition.invisibilityRate;
             
             this.styleData.opacity = util.constrain(this.styleData.values.opacity, 0, 1);
-            this.damageReduction = util.constrain(this.damageReduction, 0, 1);
+            this.damageReduction = 1 - (this.styleData.opacity / 2)
         }
 
 
