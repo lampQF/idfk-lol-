@@ -34,7 +34,7 @@ export type projectileId = "bullet" | "drone" | "trap" | "necrodrone" | "minion"
 export type barrelAddonId = "trapLauncher";
 
 /** Increase in opacity when taking damage. */
-export const visibilityRateDamage = 0.2;
+export const visibilityRateDamage = 0.09;
 
 /**
  * Format that the game stores bullet definitions in its memory.
@@ -2828,9 +2828,9 @@ const TankDefinitions = JSON.parse(`[
             "canClaimSquares": false,
             "devOnly": false
         },
-        "visibilityRateShooting": 0.23,
-        "visibilityRateMoving": 0.08,
-        "invisibilityRate": 0.03,
+        "visibilityRateShooting": 0.15,
+        "visibilityRateMoving": 0.1,
+        "invisibilityRate": 0.09,
         "fieldFactor": 0.8,
         "absorbtionFactor": 1,
         "speed": 1,
