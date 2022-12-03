@@ -292,6 +292,8 @@ export default class TankBody extends LivingEntity implements BarrelBase {
             this.styleData.opacity -= this.definition.invisibilityRate;
 
             this.styleData.opacity = util.constrain(this.styleData.values.opacity, 0, 1);
+            
+            this.damageReduction = (1 - this.styleData.opacity) / 2;
         }
 
 
@@ -315,11 +317,6 @@ export default class TankBody extends LivingEntity implements BarrelBase {
 
             // Reload
             this.reloadTime = 15 * Math.pow(0.914, this.cameraEntity.cameraData.values.statLevels.values[Stat.Reload]);
-            
-            // Opacity Defense
-            if (this.definition.flags.invisibility) {
-                this.damageReduction = (1 - this.styleData.opacity) / 2;
-            }
         }
 
         this.scoreData.score = this.cameraEntity.cameraData.values.score;
