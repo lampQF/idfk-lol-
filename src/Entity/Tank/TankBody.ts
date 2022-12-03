@@ -324,7 +324,7 @@ export default class TankBody extends LivingEntity implements BarrelBase {
                 
                 this.damageReduction += (this.definition.invisibilityRate / 2);
                 
-                this.damageReduction = util.constrain(this.damageReduction, 0, 0.5)
+                this.damageReduction = util.constrain(this.damageReduction, 0, 0.5);
             }
         }
 
