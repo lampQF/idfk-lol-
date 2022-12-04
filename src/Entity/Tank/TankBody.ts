@@ -1,17 +1,14 @@
 /*
     DiepCustom - custom tank game server that shares diep.io's WebSocket protocol
     Copyright (C) 2022 ABCxFF (github.com/ABCxFF)
-
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published
     by the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
-
     You should have received a copy of the GNU Affero General Public License
     along with this program. If not, see <https://www.gnu.org/licenses/>
 */
@@ -183,7 +180,7 @@ export default class TankBody extends LivingEntity implements BarrelBase {
         // This is actually not how necromancers claim squares.
         if (entity instanceof Square && this.definition.flags.canClaimSquares && this.barrels.length) {
             // If can claim, pick a random barrel that has drones it can still shoot, then shoot
-            const MAX_DRONES_PER_BARREL = 11 + Stat.Reload;
+            const MAX_DRONES_PER_BARREL = 11 + this.cameraEntity.cameraData.values.statLevels.values[Stat.Reload];
             const barrelsToShoot = this.barrels.filter((e) => e.definition.bullet.type === "necrodrone" && e.droneCount < MAX_DRONES_PER_BARREL);
 
             if (barrelsToShoot.length) {
@@ -290,33 +287,40 @@ export default class TankBody extends LivingEntity implements BarrelBase {
             if (this.inputs.flags & (InputFlags.up | InputFlags.down | InputFlags.left | InputFlags.right) || this.inputs.movement.x || this.inputs.movement.y) this.styleData.opacity += this.definition.visibilityRateMoving;
            
             this.styleData.opacity -= this.definition.invisibilityRate;
-            
+
             this.styleData.opacity = util.constrain(this.styleData.values.opacity, 0, 1);
-            this.damageReduction = util.constrain(this.styleData.values.opacity, (0.3 + (Stat.MaxHealth * 0.07)), 1)
+            var reductionAmount = 0.3 + (Stat.MaxHealth * 0.07);
+            this.damageReduction = util.constrain(this.styleData.values.opacity, reductionAmount, 1)
         }
 
 
         // Update stat related
         updateStats: {
             // Damage
-            this.damagePerTick = Stat.BodyDamage * 6 + 20;
+            this.damagePerTick = this.cameraEntity.cameraData.statLevels[Stat.BodyDamage] * 6 + 20;
             if (this._currentTank === Tank.Spike) this.damagePerTick *= 1.5;
 
             // Max Health
             const maxHealthCache = this.healthData.values.maxHealth;
 
-            this.healthData.maxHealth = this.definition.maxHealth + 2 * (this.cameraEntity.cameraData.values.level - 1) + Stat.MaxHealth * 20;
+            this.healthData.maxHealth = this.definition.maxHealth + 2 * (this.cameraEntity.cameraData.values.level - 1) + this.cameraEntity.cameraData.values.statLevels.values[Stat.MaxHealth] * 20;
             if (this.healthData.values.health === maxHealthCache) this.healthData.health = this.healthData.maxHealth; // just in case
             else if (this.healthData.values.maxHealth !== maxHealthCache) {
                 this.healthData.health *= this.healthData.values.maxHealth / maxHealthCache
             }
 
             // Regen
-            if ((this.definition.flags.invisibility) && (this.styleData.values.opacity === 0)) this.regenPerTick = (this.healthData.values.maxHealth * (3 + 4 * Stat.HealthRegen) + this.healthData.values.maxHealth) / 25000;
-            else this.regenPerTick = (this.healthData.values.maxHealth * 4 * Stat.HealthRegen + this.healthData.values.maxHealth) / 25000;
+            if (this.styleData.values.opacity === 0) {
+                this.regenPerTick = (this.healthData.values.maxHealth * 4 * (this.cameraEntity.cameraData.values.statLevels.values[Stat.HealthRegen] + 1) + this.healthData.values.maxHealth) / 25000;
+            } else {
+                this.regenPerTick = (this.healthData.values.maxHealth * 4 * this.cameraEntity.cameraData.values.statLevels.values[Stat.HealthRegen] + this.healthData.values.maxHealth) / 25000;
+            }
 
             // Reload
             this.reloadTime = 15 * Math.pow(0.914, this.cameraEntity.cameraData.values.statLevels.values[Stat.Reload]);
+            
+            // Opacity Defense
+            this.damageReduction = 0.5 * this.styleData.opacity;
         }
 
         this.scoreData.score = this.cameraEntity.cameraData.values.score;
