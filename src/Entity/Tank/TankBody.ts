@@ -292,7 +292,7 @@ export default class TankBody extends LivingEntity implements BarrelBase {
             this.styleData.opacity -= this.definition.invisibilityRate;
 
             this.styleData.opacity = util.constrain(this.styleData.values.opacity, 0, 1);
-            console.log(this.styleData.opacity)
+            console.log(stat.MaxHealth)
         }
 
 
