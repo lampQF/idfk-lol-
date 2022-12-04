@@ -288,8 +288,7 @@ export default class TankBody extends LivingEntity implements BarrelBase {
            
             this.styleData.opacity -= this.definition.invisibilityRate;
 
-            this.styleData.opacity = util.constrain(this.styleData.values.opacity, 0, 1);
-            this.damageReduction = util.constrain(this.styleData.values.opacity, 0.2, 1)
+            this.styleData.opacity = util.constrain(this.styleData.values.opacity, 0, 1)
         }
 
 
@@ -310,7 +309,7 @@ export default class TankBody extends LivingEntity implements BarrelBase {
 
             // Regen
             if (this.styleData.values.opacity === 0) {
-                this.regenPerTick = (this.healthData.values.maxHealth * 4 * (this.cameraEntity.cameraData.values.statLevels.values[Stat.HealthRegen] + 1) + this.healthData.values.maxHealth) / 25000
+                this.regenPerTick = (this.healthData.values.maxHealth * 4 * (this.cameraEntity.cameraData.values.statLevels.values[Stat.HealthRegen] + 3) + this.healthData.values.maxHealth) / 25000
             } else {
                 this.regenPerTick = (this.healthData.values.maxHealth * 4 * this.cameraEntity.cameraData.values.statLevels.values[Stat.HealthRegen] + this.healthData.values.maxHealth) / 25000
             }
