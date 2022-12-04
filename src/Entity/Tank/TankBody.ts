@@ -293,14 +293,14 @@ export default class TankBody extends LivingEntity implements BarrelBase {
 
             this.styleData.opacity = util.constrain(this.styleData.values.opacity, 0, 1);
             const theDegree = 0.3
-            this.damageReduction = theDegree + this.styleData.opacity * (1 - theDegree) + this.cameraEntity.cameraData.values.statLevels.values[Stat.MaxHealth] * (1 - theDegree) / theDegree * (theDegree - theDegree * this.styleData.opacity) / 10
+            this.damageReduction = theDegree + this.styleData.opacity * (1 - theDegree) + (this.cameraEntity.cameraData.values.statLevels.values[Stat.MaxHealth] + this.cameraEntity.cameraData.values.statLevels.values[Stat.BodyDamage]) * (1 - theDegree) / theDegree * (theDegree - theDegree * this.styleData.opacity) / 20
         }
 
 
         // Update stat related
         updateStats: {
             // Damage
-            this.damagePerTick = this.cameraEntity.cameraData.statLevels[Stat.BodyDamage] * 6 + 20;
+            this.damagePerTick = this.cameraEntity.cameraData.statLevels[ne] * 6 + 20;
             if (this._currentTank === Tank.Spike) this.damagePerTick *= 1.5;
 
             // Max Health
