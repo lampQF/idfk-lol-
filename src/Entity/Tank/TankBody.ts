@@ -183,7 +183,7 @@ export default class TankBody extends LivingEntity implements BarrelBase {
         // This is actually not how necromancers claim squares.
         if (entity instanceof Square && this.definition.flags.canClaimSquares && this.barrels.length) {
             // If can claim, pick a random barrel that has drones it can still shoot, then shoot
-            const MAX_DRONES_PER_BARREL = 11 + this.cameraEntity.cameraData.values.statLevels.values[Stat.Reload];
+            const MAX_DRONES_PER_BARREL = 11 + Stat.Reload;
             const barrelsToShoot = this.barrels.filter((e) => e.definition.bullet.type === "necrodrone" && e.droneCount < MAX_DRONES_PER_BARREL);
 
             if (barrelsToShoot.length) {
@@ -292,27 +292,27 @@ export default class TankBody extends LivingEntity implements BarrelBase {
             this.styleData.opacity -= this.definition.invisibilityRate;
             
             this.styleData.opacity = util.constrain(this.styleData.values.opacity, 0, 1);
-            this.damageReduction = 1 - (this.styleData.opacity / 2)
+            this.damageReduction = util.constrain(this.styleData.values.opacity, (0.2 + (Stat.MaxHealth * 0.08)), 1)
         }
 
 
         // Update stat related
         updateStats: {
             // Damage
-            this.damagePerTick = this.cameraEntity.cameraData.statLevels[Stat.BodyDamage] * 6 + 20;
+            this.damagePerTick = Stat.BodyDamage * 6 + 20;
             if (this._currentTank === Tank.Spike) this.damagePerTick *= 1.5;
 
             // Max Health
             const maxHealthCache = this.healthData.values.maxHealth;
 
-            this.healthData.maxHealth = this.definition.maxHealth + 2 * (this.cameraEntity.cameraData.values.level - 1) + this.cameraEntity.cameraData.values.statLevels.values[Stat.MaxHealth] * 20;
+            this.healthData.maxHealth = this.definition.maxHealth + 2 * (this.cameraEntity.cameraData.values.level - 1) + Stat.MaxHealth * 20;
             if (this.healthData.values.health === maxHealthCache) this.healthData.health = this.healthData.maxHealth; // just in case
             else if (this.healthData.values.maxHealth !== maxHealthCache) {
                 this.healthData.health *= this.healthData.values.maxHealth / maxHealthCache
             }
 
             // Regen
-            this.regenPerTick = (this.healthData.values.maxHealth * 4 * this.cameraEntity.cameraData.values.statLevels.values[Stat.HealthRegen] + this.healthData.values.maxHealth) / 25000;
+            this.regenPerTick = (this.healthData.values.maxHealth * 4 * Stat.HealthRegen + this.healthData.values.maxHealth) / 25000;
 
             // Reload
             this.reloadTime = 15 * Math.pow(0.914, this.cameraEntity.cameraData.values.statLevels.values[Stat.Reload]);
