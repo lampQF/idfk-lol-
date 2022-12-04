@@ -312,7 +312,7 @@ export default class TankBody extends LivingEntity implements BarrelBase {
             }
 
             // Regen
-            if (this.definition.flags.invisibility) && (this.styleData.values.opacity === 0) this.regenPerTick = (this.healthData.values.maxHealth * (3 + 4 * Stat.HealthRegen) + this.healthData.values.maxHealth) / 25000;
+            if ((this.definition.flags.invisibility) && (this.styleData.values.opacity === 0)) this.regenPerTick = (this.healthData.values.maxHealth * (3 + 4 * Stat.HealthRegen) + this.healthData.values.maxHealth) / 25000;
             else this.regenPerTick = (this.healthData.values.maxHealth * 4 * Stat.HealthRegen + this.healthData.values.maxHealth) / 25000;
 
             // Reload
